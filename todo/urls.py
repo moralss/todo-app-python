@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('show_todo/', views.show_todo),
-    path('addTodos/', views.post_todo)
+    path('showTodo/', views.show_todo),
+    path('addTodo/', views.post_todo)
 ]
