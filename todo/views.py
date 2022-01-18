@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . import forms
+from .forms import TodoForm
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 
@@ -23,5 +24,15 @@ def show_todo(request):
 
 
 def post_todo(request):
-    form = forms.Todoform()
+
+    if request.method == 'POST':
+        form = TodoForm(request.POST)
+        if form.is_valid():
+
+            topic = form.cleaned_data['topic']
+            descrption = form.cleaned_data['descrption']
+            todos_array.append(todo(topic, descrption))
+            return redirect('/todo/show_todo/')
+
+    form = TodoForm()
     return render(request, 'addTodo.html', {'form': form})
