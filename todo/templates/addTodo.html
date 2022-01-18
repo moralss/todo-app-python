@@ -1,0 +1,7 @@
+{% extends 'base.html' %} 
+    <div class="container">
+      <form  style="display: grid;  grid-template-columns: (1 , 1fr)" method="post">{% csrf_token %}
+        {{ form }}
+        <input style="margin-top: 1rem;" class="btn btn-primary" type="submit" value="Submit" />
+      </form>
+    </div>
