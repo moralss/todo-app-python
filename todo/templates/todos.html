@@ -2,11 +2,19 @@
 {% block content %}          
   <div class="container">
       <h1> My Todo List!</h1>
-      <ul>
-        {% for todo in todos_array %}
-        <p>Todo: {{ todo.topic }}</p>
-        </li>
-        {% endfor %}
-      </ul>       
+  <ol class="list-group list-group-numbered">
+    {% for todo in todos_array %}
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Topic: {{ todo.topic }}</div>
+        Description: {{ todo.description }}
+      </div>
+      <a 
+      href="{% url "todo:todo_delete" todo.id %}"
+       type="button" class="btn btn-danger rounded-pill">X</a>
+    </li>
+          <!-- href='/todo/todoDelete/1/delete' -->
+    {% endfor %}  
+  </ol>
+  {% endblock %}
   </div>
-{% endblock %}
