@@ -9,11 +9,15 @@
         <div class="fw-bold">Topic: {{ todo.topic }}</div>
         Description: {{ todo.description }}
       </div>
-      <a 
-      href="{% url "todo:todo_delete" todo.id %}"
-       type="button" class="btn btn-danger rounded-pill">X</a>
+      <div>
+        <a 
+            href="{% url "todo:todo_delete" todo.id %}"
+            type="button" class="btn btn-danger rounded-pill">X</a>
+          <a 
+            href="{% url "todo:todo_update" todo.id %}"
+            type="button" class="btn btn-success rounded-pill">Edit </a>
+      </div>
     </li>
-          <!-- href='/todo/todoDelete/1/delete' -->
     {% endfor %}  
   </ol>
   {% endblock %}

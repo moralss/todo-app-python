@@ -1,3 +1,4 @@
+from pydoc_data import topics
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import TodoForm
@@ -15,21 +16,23 @@ class Todo():
         self.topic = topic
         self.description = description
 
+    def change_todo(self, topic, description):
+        self.topic = topic
+        self.description = description
+
 
 todos_array.append(Todo(1, 'work',  'clean room'))
 todos_array.append(Todo(2, 'play', 'play fifa'))
 
 
 def show_todo(request):
-    return render(request, 'todos.html', {'todos_array': todos_array})
+    return render(request, 'pages/todos.html', {'todos_array': todos_array})
 
 
 def post_todo(request):
-
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
-
             topic = form.cleaned_data['topic']
             descrption = form.cleaned_data['descrption']
             todos_array.append(
@@ -37,7 +40,7 @@ def post_todo(request):
             return redirect('/todo/showTodo/')
 
     form = TodoForm()
-    return render(request, 'addTodo.html', {'form': form})
+    return render(request, 'pages/addTodo.html', {'form': form})
 
 
 def todo_delete(request, id):
@@ -45,7 +48,25 @@ def todo_delete(request, id):
         for item in todos_array:
             print(request)
             if item.id == id:
-                print("I found what I was looking for")
                 todos_array.remove(item)
                 return redirect('/todo/showTodo/')
-    return render(request, 'delete.html', {})
+    return render(request, 'pages/deleteConfirm.html', {})
+
+
+def todo_update(request, id):
+    if request.method == 'POST':
+        for index, item in enumerate(todos_array):
+            if item.id == id:
+                form = TodoForm(request.POST)
+                if form.is_valid():
+                    topic = form.cleaned_data['topic']
+                    descrption = form.cleaned_data['descrption']
+                    todos_array[index] = Todo(item.id, topic, descrption)
+                    return redirect('/todo/showTodo/')
+
+    filtered = list(filter(lambda a: a.id == id, todos_array))
+    selected_topic = filtered[0].topic
+    selected_description = filtered[0].description
+    form = TodoForm(
+        {'topic': selected_topic, 'descrption': selected_description})
+    return render(request, 'pages/updateTodo.html', {'form': form})
